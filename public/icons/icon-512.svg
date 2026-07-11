@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="64" fill="#030712"/>
+  <text x="256" y="320" font-family="system-ui,sans-serif" font-size="256" font-weight="700" fill="#818cf8" text-anchor="middle">s</text>
+  <rect x="156" y="200" width="200" height="130" rx="12" fill="none" stroke="#818cf8" stroke-width="10"/>
+  <rect x="186" y="200" width="140" height="36" rx="8" fill="#818cf8"/>
+</svg>
