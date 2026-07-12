@@ -109,6 +109,15 @@ export default function App() {
         />
 
         <StrengthMeter entropy={strength.entropy} label={strength.label} />
+
+        <a
+          href="https://kadihh.pages.dev/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block text-center text-sm text-gray-500 hover:text-gray-300 transition-colors"
+        >
+          another projects
+        </a>
       </main>
     </div>
   );

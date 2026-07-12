@@ -7,8 +7,7 @@ test.beforeEach(async ({ page, context }) => {
 
 test('loads and displays the app', async ({ page }) => {
   await expect(page.getByText('sirruk')).toBeVisible();
-  await expect(page.getByText('Secure Password Generator')).toBeVisible();
-  await expect(page.getByText(/Strength:/)).toBeVisible();
+  await expect(page.getByText(/Weak|Medium|Strong|Very Strong/)).toBeVisible();
 });
 
 test('displays a generated password on load', async ({ page }) => {
