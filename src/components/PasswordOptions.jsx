@@ -12,6 +12,8 @@ export default function PasswordOptions({
   onNumbersChange,
   symbols,
   onSymbolsChange,
+  excludeAmbiguous,
+  onExcludeAmbiguousChange,
 }) {
   return (
     <div className="space-y-5">
@@ -24,6 +26,17 @@ export default function PasswordOptions({
           { key: 'symbols', label: '!@#$', checked: symbols, onChange: onSymbolsChange },
         ]}
       />
+      {symbols && (
+        <label className="flex items-center gap-2 text-xs text-gray-400 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={excludeAmbiguous}
+            onChange={(e) => onExcludeAmbiguousChange(e.target.checked)}
+            className="rounded border-gray-600 bg-gray-700 text-indigo-500 focus:ring-indigo-500"
+          />
+          Exclude ambiguous symbols (| ;)
+        </label>
+      )}
     </div>
   );
 }

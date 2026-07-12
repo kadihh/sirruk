@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
@@ -9,11 +10,10 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['icons/*.svg'],
       manifest: {
         name: 'Sirruk Password Generator',
         short_name: 'Sirruk',
-        description: 'Secure cryptographically-random password and passphrase generator',
+        description: 'Secure cryptographically-random password generator',
         theme_color: '#030712',
         background_color: '#030712',
         display: 'standalone',
@@ -22,11 +22,13 @@ export default defineConfig({
             src: '/icons/icon-192.svg',
             sizes: '192x192',
             type: 'image/svg+xml',
+            purpose: 'any',
           },
           {
             src: '/icons/icon-512.svg',
             sizes: '512x512',
             type: 'image/svg+xml',
+            purpose: 'maskable',
           },
         ],
       },
@@ -35,4 +37,9 @@ export default defineConfig({
       },
     }),
   ],
+  test: {
+    environment: 'jsdom',
+    setupFiles: './src/test-setup.js',
+    exclude: ['e2e/**', 'node_modules/**'],
+  },
 })

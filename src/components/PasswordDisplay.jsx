@@ -1,13 +1,17 @@
+import { memo } from 'react';
 import { Copy, Check, RefreshCw } from 'lucide-react';
 
-export default function PasswordDisplay({ password, onCopy, onRegenerate, copied }) {
+export default memo(function PasswordDisplay({ password, onCopy, onRegenerate, copied, copyFailed, emptyMessage }) {
   return (
     <div className="relative bg-gray-800/50 border border-gray-700 rounded-xl p-4">
       <div className="flex items-center gap-3 min-h-[3rem]">
-        <span className="flex-1 text-xl sm:text-2xl font-mono tracking-wider text-gray-100 break-all select-all">
+        <span
+          className={`flex-1 font-mono tracking-wider text-gray-100 break-all select-all ${password.length > 32 ? 'text-base sm:text-lg' : 'text-xl sm:text-2xl'}`}
+          aria-live="polite"
+        >
           {password || (
             <span className="text-gray-500 italic font-sans text-base tracking-normal select-none">
-              No password generated
+              {emptyMessage || 'No password generated'}
             </span>
           )}
         </span>
@@ -15,8 +19,9 @@ export default function PasswordDisplay({ password, onCopy, onRegenerate, copied
           <button
             onClick={onCopy}
             disabled={!password}
-            className="p-2.5 rounded-lg bg-gray-700 hover:bg-gray-600 disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer"
+            className="p-3 rounded-lg bg-gray-700 hover:bg-gray-600 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer"
             title="Copy to clipboard"
+            aria-label="Copy to clipboard"
           >
             {copied ? (
               <Check className="w-5 h-5 text-emerald-400" />
@@ -27,8 +32,9 @@ export default function PasswordDisplay({ password, onCopy, onRegenerate, copied
           <button
             onClick={onRegenerate}
             disabled={!password}
-            className="p-2.5 rounded-lg bg-gray-700 hover:bg-gray-600 disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer"
+            className="p-3 rounded-lg bg-gray-700 hover:bg-gray-600 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer"
             title="Regenerate"
+            aria-label="Regenerate"
           >
             <RefreshCw className="w-5 h-5 text-gray-400" />
           </button>
@@ -39,6 +45,11 @@ export default function PasswordDisplay({ password, onCopy, onRegenerate, copied
           Copied!
         </p>
       )}
+      {copyFailed && (
+        <p className="absolute -bottom-6 right-0 text-xs text-red-400 font-medium">
+          Copy failed — select and copy manually
+        </p>
+      )}
     </div>
   );
-}
+});

@@ -1,11 +1,13 @@
-import { LEVELS } from '../utils/strength';
+import { memo } from 'react';
+import { LEVELS, getActiveLevel, estimateCrackTime } from '../utils/strength';
 
-export default function StrengthMeter({ score }) {
-  const activeIndex = LEVELS.reduce((last, lv, i) => (score >= lv.min ? i : last), -1);
+export default memo(function StrengthMeter({ entropy, label }) {
+  const activeIndex = getActiveLevel(entropy);
 
   return (
     <div className="space-y-2">
-      <div className="flex gap-1.5">
+      {/* oxlint-disable-next-line jsx-a11y/prefer-tag-over-role — div groups bars into single image for screen readers */}
+      <div className="flex gap-1.5" role="img" aria-label={`Password strength: ${label}`}>
         {LEVELS.map((lv, i) => (
           <div
             key={lv.label}
@@ -15,10 +17,17 @@ export default function StrengthMeter({ score }) {
           />
         ))}
       </div>
-      <p className="text-sm text-gray-400">
-        Strength:{' '}
-        <span className="text-gray-200 font-medium">{activeIndex >= 0 ? LEVELS[activeIndex].label : 'N/A'}</span>
-      </p>
+      <div className="flex items-center justify-between text-sm text-gray-400">
+        <span>
+          Strength:{' '}
+          <span className="text-gray-200 font-medium">{label}</span>
+        </span>
+        {entropy > 0 && (
+          <span className="text-xs text-gray-500">
+            {Math.round(entropy)} bits &middot; {estimateCrackTime(entropy)} to crack
+          </span>
+        )}
+      </div>
     </div>
   );
-}
+});

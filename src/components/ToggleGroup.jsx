@@ -1,12 +1,14 @@
-export default function ToggleGroup({ toggles }) {
+import { memo } from 'react';
+
+export default memo(function ToggleGroup({ toggles }) {
   return (
-    <div className="space-y-2">
-      <p className="text-sm font-medium text-gray-400">Character sets</p>
+    <fieldset className="space-y-2 border-0 p-0 m-0">
+      <legend className="text-sm font-medium text-gray-400">Character sets</legend>
       <div className="grid grid-cols-2 gap-3">
         {toggles.map(({ key, label, checked, onChange }) => (
           <label
             key={key}
-            className="flex items-center justify-between p-3 rounded-lg bg-gray-800 border border-gray-700 hover:border-gray-600 transition cursor-pointer"
+            className="flex items-center justify-between p-3 rounded-lg bg-gray-800 border border-gray-700 hover:border-gray-600 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500 transition cursor-pointer"
           >
             <span className="text-sm font-medium text-gray-200">{label}</span>
             <div className="relative">
@@ -21,6 +23,6 @@ export default function ToggleGroup({ toggles }) {
           </label>
         ))}
       </div>
-    </div>
+    </fieldset>
   );
-}
+});

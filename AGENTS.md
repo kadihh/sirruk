@@ -3,13 +3,22 @@
 ## Commands
 
 ```bash
-npm run dev      # Vite dev server with HMR
-npm run build    # Production build + PWA service worker generation
-npm run lint     # oxlint (NOT ESLint — no .eslintrc exists)
-npm run preview  # Serve production build locally
+npm run dev       # Vite dev server with HMR
+npm run build     # Production build + PWA service worker generation
+npm run lint      # oxlint (NOT ESLint — no .eslintrc exists)
+npm run preview   # Serve production build locally
+npm test          # Vitest unit + component tests
+npm run test:watch  # Vitest watch mode
+npm run test:e2e  # Playwright e2e tests
 ```
 
-No test runner is configured. No `test` script exists in `package.json`.
+## Testing
+
+- **Unit/Component tests:** Vitest + React Testing Library + jsdom (9 files, 55 tests)
+- **E2E tests:** Playwright (run `npm run test:e2e` with dev server)
+- Test setup: `src/test-setup.js` imports jest-dom matchers and auto-cleanup
+- Config: test settings in `vite.config.js` under `test` key
+- Linter: jsx-a11y plugin now active — catches a11y regressions at lint time
 
 ## Toolchain
 
