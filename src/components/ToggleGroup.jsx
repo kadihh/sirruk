@@ -3,7 +3,6 @@ import { memo } from 'react';
 export default memo(function ToggleGroup({ toggles }) {
   return (
     <fieldset className="space-y-2 border-0 p-0 m-0">
-      <legend className="text-sm font-medium text-gray-400">Character sets</legend>
       <div className="grid grid-cols-2 gap-3">
         {toggles.map(({ key, label, checked, onChange }) => (
           <label

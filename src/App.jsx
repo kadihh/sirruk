@@ -80,12 +80,9 @@ export default function App() {
             Not running over HTTPS — clipboard API may not work.
           </div>
         )}
-        <div className="text-center space-y-1">
-          <h1 className="text-2xl font-bold text-gray-100 tracking-tight">
-            sirruk
-          </h1>
-          <p className="text-sm text-gray-400">Secure Password Generator</p>
-        </div>
+        <h1 className="text-2xl font-bold text-gray-100 tracking-tight text-center">
+          sirruk
+        </h1>
 
         <PasswordDisplay
           password={password}
@@ -112,11 +109,6 @@ export default function App() {
         />
 
         <StrengthMeter entropy={strength.entropy} label={strength.label} />
-
-        <p className="text-xs text-gray-400 text-center leading-relaxed">
-          Uses <span className="text-gray-400">window.crypto.getRandomValues</span> for
-          cryptographically secure generation. All processing happens locally in your browser.
-        </p>
       </main>
     </div>
   );

@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { LEVELS, getActiveLevel, estimateCrackTime } from '../utils/strength';
+import { LEVELS, getActiveLevel } from '../utils/strength';
 
 export default memo(function StrengthMeter({ entropy, label }) {
   const activeIndex = getActiveLevel(entropy);
@@ -17,17 +17,7 @@ export default memo(function StrengthMeter({ entropy, label }) {
           />
         ))}
       </div>
-      <div className="flex items-center justify-between text-sm text-gray-400">
-        <span>
-          Strength:{' '}
-          <span className="text-gray-200 font-medium">{label}</span>
-        </span>
-        {entropy > 0 && (
-          <span className="text-xs text-gray-500">
-            {Math.round(entropy)} bits &middot; {estimateCrackTime(entropy)} to crack
-          </span>
-        )}
-      </div>
+      <p className="text-sm text-gray-200 font-medium">{label}</p>
     </div>
   );
 });

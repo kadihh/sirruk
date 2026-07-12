@@ -33,23 +33,3 @@ it('bar container has role=img with correct strength label', () => {
   const bars = screen.getAllByRole('img');
   expect(bars[0]).toHaveAttribute('aria-label', 'Password strength: Strong');
 });
-
-it('shows Strength: label prefix', () => {
-  render(<StrengthMeter entropy={0} label="Weak" />);
-  expect(screen.getByText(/Strength:/)).toBeInTheDocument();
-});
-
-it('shows entropy bits when entropy > 0', () => {
-  render(<StrengthMeter entropy={40} label="Strong" />);
-  expect(screen.getByText(/40 bits/)).toBeInTheDocument();
-});
-
-it('shows crack time estimate when entropy > 0', () => {
-  render(<StrengthMeter entropy={60} label="Very Strong" />);
-  expect(screen.getByText(/to crack/)).toBeInTheDocument();
-});
-
-it('does not show entropy when entropy is 0', () => {
-  render(<StrengthMeter entropy={0} label="Weak" />);
-  expect(screen.queryByText(/bits/)).not.toBeInTheDocument();
-});

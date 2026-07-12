@@ -31,12 +31,13 @@ describe('App rendering', () => {
 
   it('renders the password display area', () => {
     render(<App />);
-    expect(screen.getByText('Secure Password Generator')).toBeInTheDocument();
+    expect(screen.getByLabelText('Copy to clipboard')).toBeInTheDocument();
+    expect(screen.getByLabelText('Regenerate')).toBeInTheDocument();
   });
 
   it('renders the strength meter', () => {
     render(<App />);
-    expect(screen.getByText(/Strength:/)).toBeInTheDocument();
+    expect(screen.getByText(/Weak|Medium|Strong|Very Strong/)).toBeInTheDocument();
   });
 
   it('renders all character set toggles', () => {
@@ -97,8 +98,8 @@ describe('App integration', () => {
 
   it('strength meter shows label', () => {
     render(<App />);
-    const text = screen.getByText(/Strength:/).textContent;
-    expect(text).toMatch(/Strength:/);
+    const text = screen.getByText(/Weak|Medium|Strong|Very Strong/).textContent;
+    expect(text).toMatch(/Weak|Medium|Strong|Very Strong/);
   });
 });
 

@@ -8,7 +8,6 @@ it('renders all toggles', () => {
     { key: 'b', label: 'a–z', checked: false, onChange: vi.fn() },
   ];
   render(<ToggleGroup toggles={toggles} />);
-  expect(screen.getByText('Character sets')).toBeInTheDocument();
   expect(screen.getByText('A–Z')).toBeInTheDocument();
   expect(screen.getByText('a–z')).toBeInTheDocument();
 });
