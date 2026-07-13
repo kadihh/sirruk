@@ -1,7 +1,11 @@
 import { memo } from 'react';
 import { Copy, Check, RefreshCw } from 'lucide-react';
+import { useTranslation } from '../i18n/useTranslation';
 
 export default memo(function PasswordDisplay({ password, onCopy, onRegenerate, copied, copyFailed, emptyMessage }) {
+  const { t } = useTranslation();
+  const message = emptyMessage ?? t('display.empty');
+
   return (
     <div className="relative bg-gray-800/50 border border-gray-700 rounded-xl p-4">
       <div className="flex items-center gap-3 min-h-[3rem]">
@@ -11,7 +15,7 @@ export default memo(function PasswordDisplay({ password, onCopy, onRegenerate, c
         >
           {password || (
             <span className="text-gray-500 italic font-sans text-base tracking-normal select-none">
-              {emptyMessage || 'No password generated'}
+              {message}
             </span>
           )}
         </span>
@@ -20,8 +24,8 @@ export default memo(function PasswordDisplay({ password, onCopy, onRegenerate, c
             onClick={onCopy}
             disabled={!password}
             className="p-3 rounded-lg bg-gray-700 hover:bg-gray-600 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer"
-            title="Copy to clipboard"
-            aria-label="Copy to clipboard"
+            title={t('display.copy')}
+            aria-label={t('display.copy')}
           >
             {copied ? (
               <Check className="w-5 h-5 text-emerald-400" />
@@ -33,8 +37,8 @@ export default memo(function PasswordDisplay({ password, onCopy, onRegenerate, c
             onClick={onRegenerate}
             disabled={!password}
             className="p-3 rounded-lg bg-gray-700 hover:bg-gray-600 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer"
-            title="Regenerate"
-            aria-label="Regenerate"
+            title={t('display.regenerate')}
+            aria-label={t('display.regenerate')}
           >
             <RefreshCw className="w-5 h-5 text-gray-400" />
           </button>
@@ -42,12 +46,12 @@ export default memo(function PasswordDisplay({ password, onCopy, onRegenerate, c
       </div>
       {copied && (
         <p className="absolute -bottom-6 right-0 text-xs text-emerald-400 font-medium">
-          Copied!
+          {t('display.copied')}
         </p>
       )}
       {copyFailed && (
         <p className="absolute -bottom-6 right-0 text-xs text-red-400 font-medium">
-          Copy failed — select and copy manually
+          {t('display.copyFailed')}
         </p>
       )}
     </div>

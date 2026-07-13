@@ -5,6 +5,8 @@ export const LEVELS = [
   { label: 'Very Strong', color: 'bg-emerald-500', min: 60 },
 ];
 
+export const STRENGTH_KEYS = ['strength.weak', 'strength.medium', 'strength.strong', 'strength.veryStrong'];
+
 export function getActiveLevel(score) {
   return LEVELS.reduce((last, lv, i) => (score >= lv.min ? i : last), -1);
 }

@@ -1,9 +1,14 @@
 import { it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import PasswordDisplay from '../PasswordDisplay';
+import { LanguageProvider } from '../../i18n/LanguageProvider';
+
+function renderWithLang(ui) {
+  return render(<LanguageProvider>{ui}</LanguageProvider>);
+}
 
 it('renders the password', () => {
-  render(
+  renderWithLang(
     <PasswordDisplay
       password="testP@ss1"
       onCopy={vi.fn()}
@@ -15,7 +20,7 @@ it('renders the password', () => {
 });
 
 it('shows placeholder when password is empty', () => {
-  render(
+  renderWithLang(
     <PasswordDisplay
       password=""
       onCopy={vi.fn()}
@@ -23,25 +28,25 @@ it('shows placeholder when password is empty', () => {
       copied={false}
     />
   );
-  expect(screen.getByText('No password generated')).toBeInTheDocument();
+  expect(screen.getByText('لم يتم توليد كلمة مرور')).toBeInTheDocument();
 });
 
 it('shows custom empty message when provided', () => {
-  render(
+  renderWithLang(
     <PasswordDisplay
       password=""
       onCopy={vi.fn()}
       onRegenerate={vi.fn()}
       copied={false}
-      emptyMessage="Enable at least one character set"
+      emptyMessage="custom message"
     />
   );
-  expect(screen.getByText('Enable at least one character set')).toBeInTheDocument();
+  expect(screen.getByText('custom message')).toBeInTheDocument();
 });
 
 it('fires onCopy when copy button clicked', () => {
   const onCopy = vi.fn();
-  render(
+  renderWithLang(
     <PasswordDisplay
       password="testP@ss1"
       onCopy={onCopy}
@@ -49,13 +54,13 @@ it('fires onCopy when copy button clicked', () => {
       copied={false}
     />
   );
-  fireEvent.click(screen.getByLabelText('Copy to clipboard'));
+  fireEvent.click(screen.getByLabelText('نسخ إلى الحافظة'));
   expect(onCopy).toHaveBeenCalledOnce();
 });
 
 it('fires onRegenerate when regenerate button clicked', () => {
   const onRegenerate = vi.fn();
-  render(
+  renderWithLang(
     <PasswordDisplay
       password="testP@ss1"
       onCopy={vi.fn()}
@@ -63,12 +68,12 @@ it('fires onRegenerate when regenerate button clicked', () => {
       copied={false}
     />
   );
-  fireEvent.click(screen.getByLabelText('Regenerate'));
+  fireEvent.click(screen.getByLabelText('إعادة توليد'));
   expect(onRegenerate).toHaveBeenCalledOnce();
 });
 
 it('copy button is disabled when password is empty', () => {
-  render(
+  renderWithLang(
     <PasswordDisplay
       password=""
       onCopy={vi.fn()}
@@ -76,11 +81,11 @@ it('copy button is disabled when password is empty', () => {
       copied={false}
     />
   );
-  expect(screen.getByLabelText('Copy to clipboard')).toBeDisabled();
+  expect(screen.getByLabelText('نسخ إلى الحافظة')).toBeDisabled();
 });
 
 it('regenerate button is disabled when password is empty', () => {
-  render(
+  renderWithLang(
     <PasswordDisplay
       password=""
       onCopy={vi.fn()}
@@ -88,11 +93,11 @@ it('regenerate button is disabled when password is empty', () => {
       copied={false}
     />
   );
-  expect(screen.getByLabelText('Regenerate')).toBeDisabled();
+  expect(screen.getByLabelText('إعادة توليد')).toBeDisabled();
 });
 
 it('shows copy failure message when copyFailed is true', () => {
-  render(
+  renderWithLang(
     <PasswordDisplay
       password="test"
       onCopy={vi.fn()}
@@ -101,11 +106,11 @@ it('shows copy failure message when copyFailed is true', () => {
       copyFailed={true}
     />
   );
-  expect(screen.getByText('Copy failed — select and copy manually')).toBeInTheDocument();
+  expect(screen.getByText('فشل النسخ — حدد النص وانسخ يدوياً')).toBeInTheDocument();
 });
 
 it('shows Copied! indicator when copied is true', () => {
-  render(
+  renderWithLang(
     <PasswordDisplay
       password="testP@ss1"
       onCopy={vi.fn()}
@@ -113,5 +118,5 @@ it('shows Copied! indicator when copied is true', () => {
       copied={true}
     />
   );
-  expect(screen.getByText('Copied!')).toBeInTheDocument();
+  expect(screen.getByText('تم النسخ!')).toBeInTheDocument();
 });

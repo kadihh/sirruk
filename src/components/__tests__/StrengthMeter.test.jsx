@@ -1,35 +1,40 @@
 import { it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import StrengthMeter from '../StrengthMeter';
+import { LanguageProvider } from '../../i18n/LanguageProvider';
+
+function renderWithLang(ui) {
+  return render(<LanguageProvider>{ui}</LanguageProvider>);
+}
 
 it('displays Weak for low entropy', () => {
-  render(<StrengthMeter entropy={0} label="Weak" />);
-  expect(screen.getByText('Weak')).toBeInTheDocument();
+  renderWithLang(<StrengthMeter entropy={0} />);
+  expect(screen.getByText('ضعيفة')).toBeInTheDocument();
 });
 
 it('displays Medium for medium entropy', () => {
-  render(<StrengthMeter entropy={30} label="Medium" />);
-  expect(screen.getByText('Medium')).toBeInTheDocument();
+  renderWithLang(<StrengthMeter entropy={30} />);
+  expect(screen.getByText('متوسطة')).toBeInTheDocument();
 });
 
 it('displays Strong for high entropy', () => {
-  render(<StrengthMeter entropy={40} label="Strong" />);
-  expect(screen.getByText('Strong')).toBeInTheDocument();
+  renderWithLang(<StrengthMeter entropy={40} />);
+  expect(screen.getByText('قوية')).toBeInTheDocument();
 });
 
 it('displays Very Strong for very high entropy', () => {
-  render(<StrengthMeter entropy={65} label="Very Strong" />);
-  expect(screen.getByText('Very Strong')).toBeInTheDocument();
+  renderWithLang(<StrengthMeter entropy={65} />);
+  expect(screen.getByText('قوية جداً')).toBeInTheDocument();
 });
 
 it('renders 4 bar segments', () => {
-  const { container } = render(<StrengthMeter entropy={40} label="Strong" />);
+  const { container } = renderWithLang(<StrengthMeter entropy={40} />);
   const bars = container.querySelectorAll('.rounded-full');
   expect(bars.length).toBeGreaterThanOrEqual(4);
 });
 
 it('bar container has role=img with correct strength label', () => {
-  render(<StrengthMeter entropy={40} label="Strong" />);
+  renderWithLang(<StrengthMeter entropy={40} />);
   const bars = screen.getAllByRole('img');
-  expect(bars[0]).toHaveAttribute('aria-label', 'Password strength: Strong');
+  expect(bars[0]).toHaveAttribute('aria-label', 'قوة كلمة المرور: قوية');
 });

@@ -1,6 +1,11 @@
 import { it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import PasswordOptions from '../PasswordOptions';
+import { LanguageProvider } from '../../i18n/LanguageProvider';
+
+function renderWithLang(ui) {
+  return render(<LanguageProvider>{ui}</LanguageProvider>);
+}
 
 const defaultProps = {
   length: 16,
@@ -18,9 +23,9 @@ const defaultProps = {
 };
 
 it('renders length slider and toggles', () => {
-  render(<PasswordOptions {...defaultProps} />);
-  expect(screen.getByText('Length')).toBeInTheDocument();
-  expect(screen.getByLabelText('Length value')).toHaveValue(16);
+  renderWithLang(<PasswordOptions {...defaultProps} />);
+  expect(screen.getByText('الطول')).toBeInTheDocument();
+  expect(screen.getByLabelText('الطول value')).toHaveValue(16);
   expect(screen.getByText('A–Z')).toBeInTheDocument();
   expect(screen.getByText('a–z')).toBeInTheDocument();
   expect(screen.getByText('0–9')).toBeInTheDocument();

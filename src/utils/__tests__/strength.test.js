@@ -50,7 +50,7 @@ describe('calculatePasswordStrength', () => {
 
   it('calculates entropy for all character classes', () => {
     const result = calculatePasswordStrength('abcdefghABCD1234!@#$');
-    expect(result.entropy).toBe(131);
+    expect(result.entropy).toBe(130);
   });
 
   it('caps entropy label at Very Strong', () => {

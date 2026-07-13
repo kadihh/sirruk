@@ -1,6 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import App from '../App';
+import { LanguageProvider } from '../i18n/LanguageProvider';
+
+function renderApp() {
+  return render(<LanguageProvider><App /></LanguageProvider>);
+}
 
 function mockClipboard() {
   const writeText = vi.fn().mockResolvedValue(undefined);
@@ -25,23 +30,24 @@ afterEach(() => {
 
 describe('App rendering', () => {
   it('renders the app title', () => {
-    render(<App />);
-    expect(screen.getByText('sirruk')).toBeInTheDocument();
+    renderApp();
+    expect(screen.getByText('سِرّك')).toBeInTheDocument();
   });
 
   it('renders the password display area', () => {
-    render(<App />);
-    expect(screen.getByLabelText('Copy to clipboard')).toBeInTheDocument();
-    expect(screen.getByLabelText('Regenerate')).toBeInTheDocument();
+    renderApp();
+    expect(screen.getByLabelText('نسخ إلى الحافظة')).toBeInTheDocument();
+    expect(screen.getByLabelText('إعادة توليد')).toBeInTheDocument();
   });
 
   it('renders the strength meter', () => {
-    render(<App />);
-    expect(screen.getByText(/Weak|Medium|Strong|Very Strong/)).toBeInTheDocument();
+    renderApp();
+    const labels = screen.getAllByText(/ضعيفة|متوسطة|قوية|قوية جداً/);
+    expect(labels.length).toBeGreaterThanOrEqual(1);
   });
 
   it('renders all character set toggles', () => {
-    render(<App />);
+    renderApp();
     expect(screen.getByText('A–Z')).toBeInTheDocument();
     expect(screen.getByText('a–z')).toBeInTheDocument();
     expect(screen.getByText('0–9')).toBeInTheDocument();
@@ -49,43 +55,43 @@ describe('App rendering', () => {
   });
 
   it('renders length slider with default value', () => {
-    render(<App />);
-    expect(screen.getByLabelText('Length value')).toHaveValue(16);
+    renderApp();
+    expect(screen.getByLabelText('الطول value')).toHaveValue(16);
   });
 
   it('toggling off all charsets shows empty message', () => {
-    render(<App />);
+    renderApp();
     const toggles = screen.getAllByRole('checkbox');
     toggles.forEach(toggle => {
       if (toggle.checked) fireEvent.click(toggle);
     });
-    expect(screen.getByText('Enable at least one character set')).toBeInTheDocument();
+    expect(screen.getByText('فعّل مجموعة أحرف واحدة على الأقل')).toBeInTheDocument();
   });
 });
 
 describe('App integration', () => {
   it('generates a password on mount', () => {
-    render(<App />);
+    renderApp();
     const passwordSpan = document.querySelector('span.font-mono');
     expect(passwordSpan.textContent.length).toBeGreaterThan(0);
-    expect(passwordSpan.textContent).not.toBe('No password generated');
+    expect(passwordSpan.textContent).not.toBe('لم يتم توليد كلمة مرور');
   });
 
   it('regenerate button produces a new password', () => {
-    render(<App />);
+    renderApp();
     const passwordSpan = document.querySelector('span.font-mono');
     const first = passwordSpan.textContent;
 
     let changed = false;
     for (let i = 0; i < 20; i++) {
-      fireEvent.click(screen.getByLabelText('Regenerate'));
+      fireEvent.click(screen.getByLabelText('إعادة توليد'));
       if (passwordSpan.textContent !== first) { changed = true; break; }
     }
     expect(changed).toBe(true);
   });
 
   it('password changes when a charset is toggled', () => {
-    render(<App />);
+    renderApp();
     const passwordBefore = document.querySelector('span.font-mono').textContent;
 
     const toggles = screen.getAllByRole('checkbox');
@@ -97,69 +103,69 @@ describe('App integration', () => {
   });
 
   it('strength meter shows label', () => {
-    render(<App />);
-    const text = screen.getByText(/Weak|Medium|Strong|Very Strong/).textContent;
-    expect(text).toMatch(/Weak|Medium|Strong|Very Strong/);
+    renderApp();
+    const labels = screen.getAllByText(/ضعيفة|متوسطة|قوية|قوية جداً/);
+    expect(labels[0].textContent).toMatch(/ضعيفة|متوسطة|قوية|قوية جداً/);
   });
 });
 
 describe('clipboard', () => {
-  it('shows "Copied!" after successful copy', async () => {
-    render(<App />);
+  it('shows "تم النسخ!" after successful copy', async () => {
+    renderApp();
 
     await act(async () => {
-      fireEvent.click(screen.getByLabelText('Copy to clipboard'));
+      fireEvent.click(screen.getByLabelText('نسخ إلى الحافظة'));
     });
 
-    expect(screen.getByText('Copied!')).toBeInTheDocument();
+    expect(screen.getByText('تم النسخ!')).toBeInTheDocument();
   });
 
   it('shows error message after clipboard failure', async () => {
     navigator.clipboard.writeText.mockRejectedValueOnce(new Error('denied'));
-    render(<App />);
+    renderApp();
 
     await act(async () => {
-      fireEvent.click(screen.getByLabelText('Copy to clipboard'));
+      fireEvent.click(screen.getByLabelText('نسخ إلى الحافظة'));
     });
 
-    expect(screen.getByText(/Copy failed/)).toBeInTheDocument();
+    expect(screen.getByText(/فشل النسخ/)).toBeInTheDocument();
   });
 
-  it('clears "Copied!" after timeout', async () => {
+  it('clears "تم النسخ!" after timeout', async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
-    render(<App />);
+    renderApp();
 
     await act(async () => {
-      fireEvent.click(screen.getByLabelText('Copy to clipboard'));
+      fireEvent.click(screen.getByLabelText('نسخ إلى الحافظة'));
     });
-    expect(screen.getByText('Copied!')).toBeInTheDocument();
+    expect(screen.getByText('تم النسخ!')).toBeInTheDocument();
 
     await act(async () => {
       vi.advanceTimersByTime(2000);
     });
-    expect(screen.queryByText('Copied!')).not.toBeInTheDocument();
+    expect(screen.queryByText('تم النسخ!')).not.toBeInTheDocument();
   });
 
   it('clears clipboard error after timeout', async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
     navigator.clipboard.writeText.mockRejectedValueOnce(new Error('denied'));
-    render(<App />);
+    renderApp();
 
     await act(async () => {
-      fireEvent.click(screen.getByLabelText('Copy to clipboard'));
+      fireEvent.click(screen.getByLabelText('نسخ إلى الحافظة'));
     });
-    expect(screen.getByText(/Copy failed/)).toBeInTheDocument();
+    expect(screen.getByText(/فشل النسخ/)).toBeInTheDocument();
 
     await act(async () => {
       vi.advanceTimersByTime(3000);
     });
-    expect(screen.queryByText(/Copy failed/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/فشل النسخ/)).not.toBeInTheDocument();
   });
 });
 
 describe('security wipe', () => {
   it('clears password on visibility change to hidden', () => {
-    render(<App />);
+    renderApp();
     const passwordSpan = document.querySelector('span.font-mono');
     const before = passwordSpan.textContent;
     expect(before.length).toBeGreaterThan(0);
@@ -170,12 +176,12 @@ describe('security wipe', () => {
     });
 
     expect(passwordSpan.textContent).not.toBe(before);
-    expect(passwordSpan.textContent).toBe('No password generated');
+    expect(passwordSpan.textContent).toBe('لم يتم توليد كلمة مرور');
   });
 
   it('wipes clipboard on visibility change', () => {
     const writeText = navigator.clipboard.writeText;
-    render(<App />);
+    renderApp();
 
     act(() => {
       Object.defineProperty(document, 'hidden', { value: true, writable: true, configurable: true });
@@ -186,20 +192,20 @@ describe('security wipe', () => {
   });
 
   it('regenerates password when tab becomes visible again', async () => {
-    render(<App />);
+    renderApp();
     const passwordSpan = document.querySelector('span.font-mono');
 
     act(() => {
       Object.defineProperty(document, 'hidden', { value: true, writable: true, configurable: true });
       document.dispatchEvent(new Event('visibilitychange'));
     });
-    expect(passwordSpan.textContent).toBe('No password generated');
+    expect(passwordSpan.textContent).toBe('لم يتم توليد كلمة مرور');
 
     await act(async () => {
       Object.defineProperty(document, 'hidden', { value: false, writable: true, configurable: true });
       document.dispatchEvent(new Event('visibilitychange'));
     });
     expect(passwordSpan.textContent.length).toBeGreaterThan(0);
-    expect(passwordSpan.textContent).not.toBe('No password generated');
+    expect(passwordSpan.textContent).not.toBe('لم يتم توليد كلمة مرور');
   });
 });

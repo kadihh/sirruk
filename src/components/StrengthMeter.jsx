@@ -1,13 +1,16 @@
 import { memo } from 'react';
-import { LEVELS, getActiveLevel } from '../utils/strength';
+import { LEVELS, STRENGTH_KEYS, getActiveLevel } from '../utils/strength';
+import { useTranslation } from '../i18n/useTranslation';
 
-export default memo(function StrengthMeter({ entropy, label }) {
+export default memo(function StrengthMeter({ entropy }) {
+  const { t } = useTranslation();
   const activeIndex = getActiveLevel(entropy);
+  const strengthKey = activeIndex >= 0 ? STRENGTH_KEYS[activeIndex] : 'strength.na';
 
   return (
     <div className="space-y-2">
       {/* oxlint-disable-next-line jsx-a11y/prefer-tag-over-role — div groups bars into single image for screen readers */}
-      <div className="flex gap-1.5" role="img" aria-label={`Password strength: ${label}`}>
+      <div className="flex gap-1.5" role="img" aria-label={`${t('strength.label')} ${t(strengthKey)}`}>
         {LEVELS.map((lv, i) => (
           <div
             key={lv.label}
@@ -17,7 +20,7 @@ export default memo(function StrengthMeter({ entropy, label }) {
           />
         ))}
       </div>
-      <p className="text-sm text-gray-200 font-medium">{label}</p>
+      <p className="text-sm text-gray-200 font-medium">{t(strengthKey)}</p>
     </div>
   );
 });
