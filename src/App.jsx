@@ -116,7 +116,7 @@ export default function App() {
           rel="noopener noreferrer"
           className="block text-center text-sm text-gray-500 hover:text-gray-300 transition-colors"
         >
-          another projects
+          another project
         </a>
       </main>
     </div>

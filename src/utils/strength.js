@@ -14,7 +14,7 @@ function calculatePasswordEntropy(password) {
   if (/[a-z]/.test(password)) poolSize += 26;
   if (/[A-Z]/.test(password)) poolSize += 26;
   if (/[0-9]/.test(password)) poolSize += 10;
-  if (/[^A-Za-z0-9]/.test(password)) poolSize += 32;
+  if (/[^A-Za-z0-9]/.test(password)) poolSize += 30;
   if (poolSize === 0 || password.length === 0) return 0;
   return password.length * Math.log2(poolSize);
 }
