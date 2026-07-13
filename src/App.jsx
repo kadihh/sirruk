@@ -3,6 +3,8 @@ import PasswordDisplay from './components/PasswordDisplay';
 import PasswordOptions from './components/PasswordOptions';
 import CheckPanel from './components/CheckPanel';
 import StrengthMeter from './components/StrengthMeter';
+import DisclaimerModal from './components/DisclaimerModal';
+import AccessDenied from './components/AccessDenied';
 import { generatePassword } from './utils/generator';
 import { calculatePasswordStrength } from './utils/strength';
 import { useSecurityWipe } from './utils/useSecurityWipe';
@@ -22,6 +24,9 @@ export default function App() {
   const [excludeAmbiguous, setExcludeAmbiguous] = useState(false);
   const [mode, setMode] = useState('generate');
   const [manualPassword, setManualPassword] = useState('');
+  const [disclaimerStatus, setDisclaimerStatus] = useState(
+    () => sessionStorage.getItem('disclaimerAccepted') === '1' ? 'accepted' : 'pending'
+  );
 
   const noCharsets = !uppercase && !lowercase && !numbers && !symbols;
 
@@ -77,6 +82,22 @@ export default function App() {
 
   const displayPassword = mode === 'check' ? manualPassword : password;
   const strength = useMemo(() => calculatePasswordStrength(displayPassword), [displayPassword]);
+
+  if (disclaimerStatus === 'pending') {
+    return (
+      <DisclaimerModal
+        onAccept={() => {
+          sessionStorage.setItem('disclaimerAccepted', '1');
+          setDisclaimerStatus('accepted');
+        }}
+        onDecline={() => setDisclaimerStatus('declined')}
+      />
+    );
+  }
+
+  if (disclaimerStatus === 'declined') {
+    return <AccessDenied onGoBack={() => setDisclaimerStatus('pending')} />;
+  }
 
   return (
     <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
@@ -183,9 +204,6 @@ export default function App() {
           {t('link.anotherProject')}
         </a>
 
-        <p className="text-center text-xs text-gray-600 leading-relaxed">
-          {t('disclaimer')}
-        </p>
       </main>
     </div>
   );

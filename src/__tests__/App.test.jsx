@@ -20,10 +20,12 @@ function mockClipboard() {
 
 beforeEach(() => {
   mockClipboard();
+  sessionStorage.setItem('disclaimerAccepted', '1');
   Object.defineProperty(document, 'hidden', { value: false, writable: true, configurable: true });
 });
 
 afterEach(() => {
+  sessionStorage.clear();
   vi.restoreAllMocks();
   vi.useRealTimers();
 });
