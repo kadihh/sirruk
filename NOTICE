@@ -1,6 +1,24 @@
 This product includes software developed by third parties:
 
-1. Playwright
+1. React and React DOM
+   - License: MIT License
+   - Copyright: Meta Platforms, Inc.
+   - Homepage: https://react.dev
+
+2. lucide-react
+   - License: MIT License
+   - Homepage: https://lucide.dev
+
+3. Vite
+   - License: MIT License
+   - Homepage: https://vite.dev
+
+4. Tailwind CSS
+   - License: MIT License
+   - Copyright: Tailwind Labs, Inc.
+   - Homepage: https://tailwindcss.com
+
+5. Playwright (development/testing only)
    - License: Apache License 2.0
    - Copyright: Microsoft Corporation
    - Homepage: https://playwright.dev/

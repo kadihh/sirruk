@@ -96,13 +96,13 @@ export default memo(function CheckPanel({ password, onPasswordChange }) {
       </button>
 
       {error && (
-        <div className="rounded-lg bg-gray-800/50 border border-gray-700 px-4 py-3 text-sm text-red-400">
+        <div aria-live="polite" className="rounded-lg bg-gray-800/50 border border-gray-700 px-4 py-3 text-sm text-red-400">
           {error}
         </div>
       )}
 
       {result && result.breached && (
-        <div className="rounded-lg bg-red-950/50 border border-red-800 px-4 py-3 space-y-2">
+        <div aria-live="polite" className="rounded-lg bg-red-950/50 border border-red-800 px-4 py-3 space-y-2">
           <div className="flex items-start gap-2">
             <AlertTriangle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
             <div className="text-sm">
@@ -129,7 +129,7 @@ export default memo(function CheckPanel({ password, onPasswordChange }) {
       )}
 
       {result && !result.breached && (
-        <div className="rounded-lg bg-emerald-950/50 border border-emerald-800 px-4 py-3 flex items-start gap-2">
+        <div aria-live="polite" className="rounded-lg bg-emerald-950/50 border border-emerald-800 px-4 py-3 flex items-start gap-2">
           <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
           <div className="text-sm">
             <p className="font-semibold text-emerald-300">{t('check.safeTitle')}</p>

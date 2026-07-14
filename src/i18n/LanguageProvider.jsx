@@ -1,9 +1,13 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { LanguageContext } from './LanguageContext';
 import translations from './translations';
 
 export function LanguageProvider({ children }) {
   const [lang, setLang] = useState('ar');
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
 
   const t = useMemo(() => {
     const dict = translations[lang] || translations.en;

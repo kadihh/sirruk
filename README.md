@@ -1,6 +1,6 @@
 # sirruk
 
-A minimalist, cryptographically secure password generator built with React, Vite, and Tailwind CSS. Runs entirely in the browser — no server, no telemetry.
+A minimalist, cryptographically secure password generator and breach checker built with React, Vite, and Tailwind CSS. Generates passwords locally, checks them against HIBP's public API via k-anonymity (no API key required).
 
 ## Tech Stack
 
@@ -258,9 +258,10 @@ Also displays the crack-time estimate below the label.
 | Predictable shuffling | Fisher-Yates with CSPRNG indices |
 | Clipboard leakage | Password cleared + clipboard wiped on tab blur and page unload |
 | No secure context | HTTPS warning banner; clipboard API silently degrades |
-| Script injection | CSP header: `script-src 'self'; object-src 'none'; base-uri 'self'` |
+| Script injection | CSP header: `script-src 'self'; connect-src 'self' https://api.pwnedpasswords.com; object-src 'none'; base-uri 'self'` |
 | Ambiguous characters | Optional exclusion of `|` and `;` from symbol pool |
 | Password in memory | Security wipe clears React state + clipboard on visibility change |
+| HIBP API usage | Breach checker calls HIBP's public API via k-anonymity (no API key required). Only the first 5 characters of the SHA-1 hash are sent — the password never leaves your device. |
 
 ## PWA
 

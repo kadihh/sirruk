@@ -135,6 +135,7 @@ export default function App() {
           <div className="flex gap-1 bg-gray-800 rounded-lg p-1">
             <button
               onClick={() => setLang('ar')}
+              aria-label="العربية"
               className={`px-2.5 py-1.5 text-xs font-medium rounded-md transition cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none ${
                 lang === 'ar'
                   ? 'bg-gray-700 text-gray-100'
@@ -145,6 +146,7 @@ export default function App() {
             </button>
             <button
               onClick={() => setLang('en')}
+              aria-label="English"
               className={`px-2.5 py-1.5 text-xs font-medium rounded-md transition cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none ${
                 lang === 'en'
                   ? 'bg-gray-700 text-gray-100'
